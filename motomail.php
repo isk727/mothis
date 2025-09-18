@@ -4,10 +4,6 @@ define('API_URL', 'https://www.motorolahis.jp/member/cgi-bin/api-mail.php');
 define('LOG_FILE', '/usr/local/motomail/log/log.txt');
 require '/usr/local/motomail/phpmailer/PHPMailerAutoload.php';
 require '/usr/local/motomail/vendor/autoload.php';
-setlocale(LC_ALL, 'ja_JP.UTF-8');
-date_default_timezone_set('Asia/Tokyo');
-mb_language('japanese');
-mb_internal_encoding('UTF-8');
 $mail = get_mail(API_URL);
 if ($mail['to'] == 'NULL') {
   echo 'NULL'.PHP_EOL;
