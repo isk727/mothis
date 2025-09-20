@@ -5,20 +5,25 @@ define('LOG_FILE', '/usr/local/motomail/log/log.txt');
 require '/usr/local/motomail/phpmailer/PHPMailerAutoload.php';
 require '/usr/local/motomail/vendor/autoload.php';
 $mail = get_mail(API_URL);
-if ($mail['to'] == 'NULL') {
-  echo 'NULL'.PHP_EOL;
-  exit(1);
-} else {
-  $gmail = array('host' => 'smtp.gmail.com', 'port' => 587, 'auth' => true, 'charset' => 'utf-8', 'encoding' => 'base64', 'secure' => 'tls', 'username' => 'mothis49@gmail.com', 'password' => 'ogkpbdccxqmpvcit', 'from' => 'res2011@freescale.com', 'fromname' => 'モトローラ健康保険組合');
-  $result = send_mail($gmail, $mail);
-  if ($result['ret']) {
-    echo 'SEND'.PHP_EOL;
+if(isset($mail)) {
+  if ($mail['to'] == 'NULL') {
+    echo 'NULL'.PHP_EOL;
+    exit(1);
   } else {
-    echo 'ERROR'.PHP_EOL;    
+    $gmail = array('host' => 'smtp.gmail.com', 'port' => 587, 'auth' => true, 'charset' => 'utf-8', 'encoding' => 'base64', 'secure' => 'tls', 'username' => 'mo$
+    $result = send_mail($gmail, $mail);
+    if ($result['ret']) {
+      echo 'SEND'.PHP_EOL;
+    } else {
+      echo 'ERROR'.PHP_EOL;
+    }
+    $contents = date('Y-m-d H:i:s').' '.$result['log'].PHP_EOL;
+    file_put_contents(LOG_FILE, $contents.file_get_contents(LOG_FILE));
+    exit(0);
   }
-  $contents = date('Y-m-d H:i:s').' '.$result['log'].PHP_EOL;
-  file_put_contents(LOG_FILE, $contents.file_get_contents(LOG_FILE));
-  exit(0);
+} else {
+    echo 'API-ERROR'.PHP_EOL;
+    exit(1);
 }
 
 function get_mail($url)
